@@ -1,0 +1,15 @@
+<Map background-color="#FFFFFF00" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+  <Style name="style_1">
+    <Rule>
+      <PolygonSymbolizer fill="rgba(64,64,64,0.8)" />
+      <LineSymbolizer stroke="#999999" stroke-width="0.5" />
+    </Rule>
+  </Style>
+  <Layer name="hyderabad_admin" status="on" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+    <StyleName>style_1</StyleName>
+    <Datasource>
+      <Parameter name="type">shape</Parameter>
+      <Parameter name="file">hyderabad_admin_3857</Parameter>
+    </Datasource>
+  </Layer>
+</Map>

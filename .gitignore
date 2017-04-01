@@ -1,0 +1,8 @@
+/*.o
+/tilegrid
+/out.txt
+/*.swp
+/*.DS_Store
+/*.png
+/*.json
+/compile.sh
