@@ -33,7 +33,7 @@
 #include "lat_lng.hpp"
 #include "map_tile.hpp"
 #include "json_object.hpp"
-#include "grid_utils.hpp"
+#include "python_grid_utils.hpp"
 
 using namespace mapnik;
 
@@ -63,38 +63,17 @@ void MapTile::genGrid(int x, int y, int z)
     box2d<double> box = getBox(x, y, z);
     m_map.zoom_to_box(box);
 
-    std::string known_id_key = "GID";
+    std::string known_id_key = "ID";
     mapnik::grid my_grid(m_map.width(), m_map.height(), known_id_key);
     std::vector<std::string> fields;
+    fields.push_back("ID");
     fields.push_back("NAME");
     fields.push_back("TYPE");
     fields.push_back("ADMIN_LEVE");
-    std::vector<std::string>::iterator it;
-    for (it=fields.begin(); it != fields.end(); ++it) {
-        my_grid.add_field(*it);
-    }
-    std::set<std::string> attributes = my_grid.get_fields();
-    if (attributes.find(known_id_key) != attributes.end())
-    {
-        attributes.erase(known_id_key);
-    }
-
-    std::string join_field = my_grid.get_key();
-    if (known_id_key != join_field &&
-        attributes.find(join_field) == attributes.end())
-    {
-        attributes.insert(join_field);
-    }
-
-    mapnik::grid_renderer<mapnik::grid> ren(m_map, my_grid, 1.0, 0, 0);
-    std::vector<mapnik::layer> const& layers = m_map.layers();
-    ren.apply(layers[0], attributes);
-
-    JsonObject json;
-    grid_encode(json, my_grid, 4);
-    std::string json_string = json.to_string();
-
-    std::cout << json_string << "\n";
+    render_layer_for_grid(m_map, my_grid, 0, fields, 1.0, 0, 0);
+    grid_json_data json = grid_encode<mapnik::grid>(my_grid, "utf", true, 4);
+    std::string json_str = get_json_string(json);
+    std::cout << json_str << std::endl;
 }
 
 box2d<double> MapTile::getBox(int x, int y, int z)
